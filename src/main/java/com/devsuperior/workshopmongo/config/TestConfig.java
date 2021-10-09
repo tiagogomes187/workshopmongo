@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Profile;
 import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -45,7 +44,7 @@ public class TestConfig {
         Comment c3 = new Comment("Tenha um ótimo dia!", Instant.parse("2021-02-14T12:34:26Z"), new Author(alex));
 
         post1.getComments().addAll(Arrays.asList(c1, c2));
-        post2.getComments().addAll(List.of(c3));
+        post2.getComments().addAll(Arrays.asList(c3,c2));
 
         postRepository.saveAll(Arrays.asList(post1, post2));
 
