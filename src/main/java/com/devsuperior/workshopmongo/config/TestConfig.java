@@ -6,7 +6,6 @@ import com.devsuperior.workshopmongo.models.entities.Post;
 import com.devsuperior.workshopmongo.models.entities.User;
 import com.devsuperior.workshopmongo.repositories.PostRepository;
 import com.devsuperior.workshopmongo.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -19,14 +18,17 @@ import java.util.List;
 @Profile("test")
 public class TestConfig {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+
+    public TestConfig(UserRepository userRepository, PostRepository postRepository) {
+        this.userRepository = userRepository;
+        this.postRepository = postRepository;
+    }
 
     @PostConstruct
-    public void init(){
+    public void init() {
 
         userRepository.deleteAll();
         postRepository.deleteAll();
@@ -35,7 +37,10 @@ public class TestConfig {
         User alex = new User(null, "Alex Green", "alex@gmail.com");
         User bob = new User(null, "Bob Grey", "bob@gmail.com");
 
-        userRepository.saveAll(Arrays.asList(maria, alex, bob));
+        userRepository.save(maria);
+        userRepository.save(alex);
+        userRepository.save(bob);
+        //userRepository.insert(Arrays.asList(maria, alex, bob));
 
         Post post1 = new Post(null, Instant.parse("2021-02-13T11:15:01Z"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new Author(maria));
         Post post2 = new Post(null, Instant.parse("2021-02-14T10:05:49Z"), "Bom dia", "Acordei feliz hoje!", new Author(maria));
@@ -51,7 +56,5 @@ public class TestConfig {
 
         maria.getPosts().addAll(Arrays.asList(post1, post2));
         userRepository.save(maria);
-
-
     }
 }
