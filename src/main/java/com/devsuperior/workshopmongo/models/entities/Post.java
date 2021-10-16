@@ -5,12 +5,14 @@ import com.devsuperior.workshopmongo.models.embedded.Comment;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collation = "posts")
-public class Post {
+@Document(collection="posts")
+public class Post implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String id;
