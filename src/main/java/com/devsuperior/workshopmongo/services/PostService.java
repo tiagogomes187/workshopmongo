@@ -1,0 +1,32 @@
+package com.devsuperior.workshopmongo.services;
+
+import com.devsuperior.workshopmongo.models.dto.PostDTO;
+import com.devsuperior.workshopmongo.models.entities.Post;
+import com.devsuperior.workshopmongo.repositories.PostRepository;
+import com.devsuperior.workshopmongo.services.exceptions.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+public class PostService {
+
+
+    private final PostRepository repository;
+
+    public PostService(PostRepository repository) {
+        this.repository = repository;
+    }
+
+    public PostDTO findById(String id){
+        Post entity = getEntityById(id);
+        return new PostDTO(entity);
+    }
+
+
+    private Post getEntityById(String id){
+        Optional<Post> result = repository.findById(id);
+        return result.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
+    }
+
+}
